@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Basics Cheatsheet · neue fische</title>
+<style>
+  :root{
+    --brand:#FF4A11; --charcoal:#252629; --purple:#7B3FE4;
+    --light:#EFECE7; --light2:#F3F5F9; --white:#FFFFFF;
+    --code-bg:#F7F7F9; --gray:#6B6B6B; --border:#E4E6EB; --k:#FF7A4D; --s:#03AC13; --c:#9AA0A6;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--light2);color:var(--charcoal);
+    font-family:'Inter',ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    line-height:1.5;font-size:14px;-webkit-font-smoothing:antialiased;}
+  header{background:var(--charcoal);color:var(--white);padding:34px 40px 30px;position:relative;overflow:hidden;}
+  header::after{content:"";position:absolute;right:-60px;bottom:-60px;width:220px;height:220px;
+    border-radius:50%;background:radial-gradient(circle,rgba(255,74,17,.18),transparent 70%);}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
+  .topbar img{height:26px;}
+  .eyebrow-top{color:var(--brand);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;}
+  header h1{margin:0;font-size:34px;font-weight:600;letter-spacing:-.02em;line-height:1.05;}
+  header h1 .accent{color:var(--brand);}
+  header p{margin:10px 0 0;color:#B9BBC0;font-size:14px;max-width:760px;line-height:1.5;}
+  header .hint{margin-top:16px;font-size:12.5px;color:#8A8D93;}
+  header .hint b{color:var(--light);}
+  main{max-width:1360px;margin:0 auto;padding:30px 40px 60px;}
+  .cols{column-count:3;column-gap:26px;}
+  @media (max-width:1100px){.cols{column-count:2;}}
+  @media (max-width:720px){.cols{column-count:1;}}
+  .sec{break-inside:avoid;margin-bottom:24px;}
+  .eyebrow{color:var(--brand);font-size:11.5px;font-weight:600;letter-spacing:.12em;
+    text-transform:uppercase;margin:0 0 10px 2px;}
+  .item{background:var(--white);border:1px solid var(--border);border-radius:10px;margin-bottom:9px;
+    break-inside:avoid;overflow:hidden;transition:border-color .15s;}
+  .item[open]{border-color:var(--brand);box-shadow:0 2px 10px rgba(37,38,41,.06);}
+  summary{list-style:none;cursor:pointer;padding:11px 14px;display:flex;align-items:baseline;gap:9px;
+    user-select:none;transition:background .12s;}
+  summary::-webkit-details-marker{display:none;}
+  summary:hover{background:var(--light2);}
+  .chev{color:var(--brand);font-size:18px;font-weight:700;line-height:1;transform:rotate(0deg);
+    transition:transform .18s;flex-shrink:0;}
+  .item[open] .chev{transform:rotate(90deg);}
+  .it-title{font-weight:600;font-size:13.5px;color:var(--charcoal);letter-spacing:-.01em;flex-shrink:0;}
+  .it-sub{color:var(--gray);font-size:11.5px;font-weight:400;}
+  .body{padding:0 14px 14px;}
+  pre{background:var(--code-bg);color:var(--charcoal);padding:10px 12px;border-radius:7px;overflow-x:auto;
+    margin:2px 0 0;font-size:12px;line-height:1.55;border:1px solid var(--border);
+    font-family:'JetBrains Mono',"SF Mono",Menlo,Consolas,monospace;}
+  pre .c{color:var(--c);font-style:italic;} pre .k{color:var(--k);font-weight:600;} pre .s{color:var(--s);}
+  code{background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:.08em .38em;
+    font-family:'JetBrains Mono',"SF Mono",Menlo,Consolas,monospace;font-size:.92em;color:var(--charcoal);}
+  .out{margin-top:10px;}
+  .out-label{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--brand);margin-bottom:5px;}
+  .out-label::before{content:"\2192  ";}
+  pre.npout{background:#FFF7F4;border-color:#FFE0D5;color:var(--charcoal);white-space:pre;font-size:11.5px;}
+  .ref-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:2px;}
+  .ref-table td{padding:5px 7px;border-bottom:1px solid var(--light2);vertical-align:top;}
+  .ref-table td:first-child{white-space:nowrap;}
+  .tip{background:#FFF3EF;border-left:3px solid var(--brand);padding:7px 10px;border-radius:0 6px 6px 0;
+    font-size:12px;margin-top:10px;color:#8a3416;}
+  footer{text-align:center;color:var(--gray);font-size:12px;padding:24px;border-top:1px solid var(--border);
+    background:var(--white);}
+  footer a{color:var(--brand);text-decoration:none;}
+  @media print{
+    body{background:#fff;} .cols{column-count:3;}
+    .item{border-color:var(--border)!important;box-shadow:none!important;} .item .body{display:block!important;}
+    header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <img src="data:image/png;base64,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" alt="neue fische">
+    <span class="eyebrow-top">Data Science · Reference</span>
+  </div>
+  <h1><span class="accent">Python Basics</span> Cheatsheet</h1>
+  <p>The core Python language for data science: numbers, strings, control flow, the four built-in data structures, comprehensions, and functions. Click any item to expand its code and real output.</p>
+  <div class="hint"><b>Tip:</b> every example is live output, captured by actually running the snippet.</div>
+</header>
+<main>
+  <div class="cols">
+    <section class="sec"><div class="eyebrow">Numbers & Operators</div><details class="item" open>
+  <summary><span class="chev">›</span><span class="it-title">Arithmetic</span><span class="it-sub">+ - * / **</span></summary>
+  <div class="body"><pre>32 + 23      <span class="c"># add</span>
+19 - 21      <span class="c"># subtract</span>
+11 * 11      <span class="c"># multiply</span>
+12 / 32      <span class="c"># true division (always float)</span>
+3 ** 2       <span class="c"># exponent</span></pre><div class="out"><span class="out-label">results</span><pre class="npout">32 + 23  -&gt;  55
+19 - 21  -&gt;  -2
+11 * 11  -&gt;  121
+12 / 32  -&gt;  0.375
+3 ** 2  -&gt;  9</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Floor division & modulo</span><span class="it-sub">// and %</span></summary>
+  <div class="body"><pre>34 // 4      <span class="c"># floor division (drops remainder)</span>
+34 % 4       <span class="c"># modulo (the remainder)</span></pre><div class="out"><span class="out-label">results</span><pre class="npout">34 // 4  -&gt;  8
+34 % 4  -&gt;  2</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Built-in math helpers</span><span class="it-sub">abs, min, max, round</span></summary>
+  <div class="body"><pre>abs(-2.14)
+min(14, 21, 11, 44)
+max(14, 21, 11, 44)
+round(3.14159, 3)   <span class="c"># 2nd arg = decimal places</span></pre><div class="out"><span class="out-label">results</span><pre class="npout">abs(-2.14)  -&gt;  2.14
+min(14, 21, 11, 44)  -&gt;  11
+max(14, 21, 11, 44)  -&gt;  44
+round(3.14159, 3)  -&gt;  3.142</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Operator precedence</span><span class="it-sub">* before +, () wins</span></summary>
+  <div class="body"><pre>4 + 6 * 5
+(4 + 6) * 5</pre><div class="out"><span class="out-label">results</span><pre class="npout">4 + 6 * 5  -&gt;  34
+(4 + 6) * 5  -&gt;  50</pre></div></div>
+</details></section><section class="sec"><div class="eyebrow">Variables & Types</div><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Assignment & naming</span><span class="it-sub">snake_case, multiple assignment</span></summary>
+  <div class="body"><pre>a = 8
+b = "Hello"          <span class="c"># use snake_case for names</span>
+total, x = 0, 1       <span class="c"># assign several at once</span>
+a += 5                <span class="c"># augmented assignment (a = a + 5)</span></pre><div class="out"><span class="out-label">a, then total/x</span><pre class="npout">13
+0 1</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Types & type()</span><span class="it-sub">int, float, complex, bool, str</span></summary>
+  <div class="body"><pre>type(14)             <span class="c"># whole number</span>
+type(32.2)           <span class="c"># decimal</span>
+type(complex(5, 6))  <span class="c"># complex</span>
+type(True)           <span class="c"># boolean</span></pre><div class="out"><span class="out-label">type() results</span><pre class="npout">type(14)          -&gt; int
+type(32.2)        -&gt; float
+type(complex(5,6))-&gt; complex
+type(True)        -&gt; bool
+type("hi")        -&gt; str</pre></div><div class="tip">Python is <b>duck-typed</b>: numbers with a decimal point are <code>float</code>, without are <code>int</code>.</div></div>
+</details></section><section class="sec"><div class="eyebrow">Strings</div><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Create & combine</span><span class="it-sub">quotes, + concat, * repeat</span></summary>
+  <div class="body"><pre>f = "This is a string."     <span class="c"># single or double quotes</span>
+"first" + " " + "second"     <span class="c"># concatenate</span>
+"ab " * 3                    <span class="c"># repeat</span></pre><div class="out"><span class="out-label">results</span><pre class="npout">"first" + " " + "second"  -&gt;  'first second'
+"ab " * 3  -&gt;  'ab ab ab '</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">String methods</span><span class="it-sub">upper, lower, replace, split, strip</span></summary>
+  <div class="body"><pre>s = "This IS my STRING!"
+s.upper(); s.lower(); s.capitalize()
+s.replace("STRING", "LIST")
+s.split()             <span class="c"># split on whitespace -> list</span></pre><div class="out"><span class="out-label">results</span><pre class="npout">s = 'This IS my STRING!'
+s.upper()      -&gt; 'THIS IS MY STRING!'
+s.lower()      -&gt; 'this is my string!'
+s.capitalize() -&gt; 'This is my string!'
+s.replace("STRING","LIST") -&gt; 'This IS my LIST!'
+s.split()      -&gt; ['This', 'IS', 'my', 'STRING!']</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Indexing & slicing</span><span class="it-sub">[i], [start:stop:step], negatives</span></summary>
+  <div class="body"><pre>t = "Test String"
+t[1]        <span class="c"># 2nd char (0-based)</span>
+t[-1]       <span class="c"># last char</span>
+t[1:3]      <span class="c"># slice (stop is exclusive)</span>
+t[::2]      <span class="c"># every 2nd char</span></pre><div class="out"><span class="out-label">results</span><pre class="npout">t = 'Test String'   (len 11)
+t[1]     -&gt; 'e'
+t[-1]    -&gt; 'g'
+t[1:3]   -&gt; 'es'
+t[::2]   -&gt; 'Ts tig'
+t[2:10:3]-&gt; 'sSi'</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">f-strings</span><span class="it-sub">embed values in text</span></summary>
+  <div class="body"><pre>name = "Ada"; age = 36
+f"{name} is {age} ({age * 12} months)"   <span class="c"># expressions work inside {}</span></pre><div class="out"><span class="out-label">output</span><pre class="npout">Ada is 36 (432 months)</pre></div></div>
+</details></section><section class="sec"><div class="eyebrow">Booleans & Comparisons</div><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Comparisons</span><span class="it-sub">== != < > <= >=</span></summary>
+  <div class="body"><pre>1 == 2       <span class="c"># equal</span>
+1 != 2       <span class="c"># not equal</span>
+1 < 2
+"A" < "B"    <span class="c"># strings compare alphabetically</span></pre><div class="out"><span class="out-label">results</span><pre class="npout">1 == 2  -&gt;  False
+1 != 2  -&gt;  True
+1 &lt; 2  -&gt;  True
+1 &lt;= 1.1  -&gt;  True
+"A" &lt; "B"  -&gt;  True</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">and / or / not</span><span class="it-sub">combine conditions</span></summary>
+  <div class="body"><pre>x = 12
+x > 10 or x < 5
+not (x <= 10 and x >= 5)</pre><div class="out"><span class="out-label">results</span><pre class="npout">True
+True</pre></div></div>
+</details></section><section class="sec"><div class="eyebrow">If Statements</div><details class="item" open>
+  <summary><span class="chev">›</span><span class="it-title">if / elif / else</span><span class="it-sub">branch on conditions</span></summary>
+  <div class="body"><pre>x = -3
+if x < 0:
+    print("You entered a negative number.")
+elif x > 0:
+    print("You entered a positive number.")
+else:
+    print("You entered the number 0.")</pre><div class="out"><span class="out-label">printed</span><pre class="npout">You entered a negative number.</pre></div><div class="tip">Python checks branches top to bottom and runs the <b>first</b> true one. Indentation (4 spaces) defines the block.</div></div>
+</details></section><section class="sec"><div class="eyebrow">Loops</div><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">while loop</span><span class="it-sub">repeat until condition is false</span></summary>
+  <div class="body"><pre>total, x = 0, 1
+while x <= 8:
+    total += x
+    x += 1
+print(total)</pre><div class="out"><span class="out-label">printed</span><pre class="npout">36</pre></div><div class="tip">Always change the loop variable inside, or you get an <b>infinite loop</b>.</div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">for loop & range</span><span class="it-sub">iterate a sequence</span></summary>
+  <div class="body"><pre>for i in range(5):     <span class="c"># 0,1,2,3,4 (stop is exclusive)</span>
+    print(i, end=" ")</pre><div class="out"><span class="out-label">printed</span><pre class="npout">0 1 2 3 4 </pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">enumerate</span><span class="it-sub">index + value together</span></summary>
+  <div class="body"><pre>for i, name in enumerate(["Max", "Moritz"]):
+    print(i, name)</pre><div class="out"><span class="out-label">printed</span><pre class="npout">0 Max
+1 Moritz</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">break & continue</span><span class="it-sub">control the loop</span></summary>
+  <div class="body"><pre>for i in range(6):
+    if i == 3:
+        continue    <span class="c"># skip to next iteration</span>
+    if i == 5:
+        break       <span class="c"># exit the loop</span>
+    print(i, end=" ")</pre><div class="out"><span class="out-label">printed</span><pre class="npout">0 1 2 4 </pre></div></div>
+</details></section><section class="sec"><div class="eyebrow">Lists</div><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Create</span><span class="it-sub">[] literal or list()</span></summary>
+  <div class="body"><pre>[1, "hello", 3]        <span class="c"># mixed types allowed</span>
+list("Hello")          <span class="c"># iterable -> list of chars</span></pre><div class="out"><span class="out-label">results</span><pre class="npout">[1, 'hello', 3]  -&gt;  [1, 'hello', 3]
+list("Hello")  -&gt;  ['H', 'e', 'l', 'l', 'o']</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Methods</span><span class="it-sub">append, sort, count, ...</span></summary>
+  <div class="body"><pre>lst = [3, 1, 2]
+lst.append(4)          <span class="c"># add to end</span>
+lst.sort()             <span class="c"># sort in place</span>
+lst.count(1)</pre><div class="out"><span class="out-label">printed</span><pre class="npout">[1, 2, 3, 4]
+count of 1: 1</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Index & slice</span><span class="it-sub">same rules as strings</span></summary>
+  <div class="body"><pre>nums = [10, 20, 30, 40]
+nums[1]      <span class="c"># 20</span>
+nums[-1]     <span class="c"># last</span>
+nums[1:3]    <span class="c"># slice</span></pre><div class="out"><span class="out-label">results</span><pre class="npout">[10,20,30,40][1]  -&gt;  20
+[10,20,30,40][-1]  -&gt;  40
+[10,20,30,40][1:3]  -&gt;  [20, 30]</pre></div></div>
+</details></section><section class="sec"><div class="eyebrow">Tuples</div><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Immutable sequences</span><span class="it-sub">create & unpack</span></summary>
+  <div class="body"><pre>(1, 2, 3)              <span class="c"># parentheses (or just commas)</span>
+tuple("abc")           <span class="c"># from an iterable</span>
+a, b, c = (1, 2, 3)    <span class="c"># unpacking</span></pre><div class="out"><span class="out-label">notes</span><pre class="npout">(1, 2, 3)            -&gt; (1, 2, 3)
+tuple("abc")         -&gt; ('a', 'b', 'c')
+a, b, c = (1, 2, 3)  -&gt; unpacks to a=1, b=2, c=3
+tuples are immutable: t[0] = 9  raises TypeError</pre></div><div class="tip">Tuples can't be changed after creation, use them for fixed collections. (A mutable item <i>inside</i> a tuple can still change.)</div></div>
+</details></section><section class="sec"><div class="eyebrow">Dictionaries</div><details class="item" open>
+  <summary><span class="chev">›</span><span class="it-title">Key-value pairs</span><span class="it-sub">create, access, get()</span></summary>
+  <div class="body"><pre>caps = {"Georgia": "Atlanta", "Colorado": "Denver"}
+caps["Georgia"]                 <span class="c"># index by KEY</span>
+caps.get("Bavaria", "not found")<span class="c"># safe access with default</span>
+caps["Indiana"] = "Indianapolis"<span class="c"># add / update</span></pre><div class="out"><span class="out-label">printed</span><pre class="npout">Atlanta
+not found
+['Georgia', 'Colorado', 'Indiana']
+['Atlanta', 'Denver', 'Indianapolis']</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Looping</span><span class="it-sub">keys(), values(), items()</span></summary>
+  <div class="body"><pre>for state, capital in caps.items():
+    print(state, "->", capital)</pre><div class="out"><span class="out-label">printed</span><pre class="npout">Georgia -&gt; Atlanta
+Colorado -&gt; Denver</pre></div></div>
+</details></section><section class="sec"><div class="eyebrow">Sets</div><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Unique collections</span><span class="it-sub">{} or set()</span></summary>
+  <div class="body"><pre>{1, 2, 2, 3, 3, 3}     <span class="c"># duplicates removed</span>
+set([1, 1, 2])         <span class="c"># from a list</span></pre><div class="out"><span class="out-label">results</span><pre class="npout">{1, 2, 2, 3, 3, 3}  -&gt;  {1, 2, 3}
+set([1, 1, 2])  -&gt;  {1, 2}</pre></div><div class="tip">Use <code>set()</code> for the empty set; <code>{}</code> is an empty dict. Membership tests are very fast.</div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Set operations</span><span class="it-sub">union, intersection, difference</span></summary>
+  <div class="body"><pre>a, b = {1, 2, 3}, {3, 4, 5}
+a | b     <span class="c"># union</span>
+a & b     <span class="c"># intersection</span>
+a - b     <span class="c"># difference</span></pre><div class="out"><span class="out-label">printed</span><pre class="npout">union: {1, 2, 3, 4, 5}
+intersection: {3}
+difference: {1, 2}</pre></div></div>
+</details></section><section class="sec"><div class="eyebrow">Comprehensions</div><details class="item" open>
+  <summary><span class="chev">›</span><span class="it-title">List comprehension</span><span class="it-sub">build a list in one line</span></summary>
+  <div class="body"><pre>[n**2 for n in [1, 5, 9]]
+[n for n in range(10) if n % 2 == 0]   <span class="c"># with a condition</span></pre><div class="out"><span class="out-label">results</span><pre class="npout">[n**2 for n in [1, 5, 9]]  -&gt;  [1, 25, 81]
+[n for n in range(10) if n % 2 == 0]  -&gt;  [0, 2, 4, 6, 8]</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Dict comprehension</span><span class="it-sub">{key: value for ...}</span></summary>
+  <div class="body"><pre>{n: n**2 for n in range(1, 5)}</pre><div class="out"><span class="out-label">result</span><pre class="npout">{n: n**2 for n in range(1, 5)}  -&gt;  {1: 1, 2: 4, 3: 9, 4: 16}</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Tuple (generator)</span><span class="it-sub">pass a generator to tuple()</span></summary>
+  <div class="body"><pre>tuple(n for n in range(10) if n % 2 == 0)</pre><div class="out"><span class="out-label">result</span><pre class="npout">tuple(n for n in range(10) if n % 2 == 0)  -&gt;  (0, 2, 4, 6, 8)</pre></div></div>
+</details></section><section class="sec"><div class="eyebrow">Functions</div><details class="item" open>
+  <summary><span class="chev">›</span><span class="it-title">Define & call</span><span class="it-sub">def, return, default args</span></summary>
+  <div class="body"><pre>def get_evens(n=10):          <span class="c"># n defaults to 10</span>
+    return [x for x in range(n) if x % 2 == 0]
+
+get_evens()      <span class="c"># uses default</span>
+get_evens(6)     <span class="c"># positional argument</span></pre><div class="out"><span class="out-label">printed</span><pre class="npout">[0, 2, 4, 6, 8]
+[0, 2, 4]</pre></div></div>
+</details><details class="item">
+  <summary><span class="chev">›</span><span class="it-title">Positional vs keyword args</span><span class="it-sub">and mixing them</span></summary>
+  <div class="body"><pre>def get_multiples(n=5, divisor=2):
+    return [x for x in range(n) if x % divisor == 0]
+
+get_multiples(10, 3)             <span class="c"># positional</span>
+get_multiples(n=10, divisor=3)   <span class="c"># keyword</span>
+get_multiples(10, divisor=3)     <span class="c"># positional THEN keyword</span></pre><div class="out"><span class="out-label">printed</span><pre class="npout">[0, 3, 6, 9]
+[0, 3, 6, 9]
+[0, 3, 6, 9]</pre></div><div class="tip">Keyword args must come after positional ones. Params with defaults must come after params without.</div></div>
+</details></section><section class="sec"><div class="eyebrow">PEP8 & Best Practices</div><details class="item" open>
+  <summary><span class="chev">›</span><span class="it-title">Style guidelines</span><span class="it-sub">readable code is shareable code</span></summary>
+  <div class="body"><table class="ref-table"><tr><td>naming</td><td><code>snake_case</code> for variables and functions</td></tr><tr><td>indentation</td><td>4 spaces, never tabs (do not mix)</td></tr><tr><td>whitespace</td><td>spaces around binary operators: <code>x = i * 2 - 1</code></td></tr><tr><td>line length</td><td>keep lines under ~79 chars; break long expressions</td></tr><tr><td>avoid names</td><td><code>l</code>, <code>O</code>, <code>I</code> as single-char names (look like 1/0)</td></tr><tr><td>operators</td><td>at line breaks, keep the operator with its operand (start the new line with it)</td></tr></table></div>
+</details></section>
+  </div>
+</main>
+<footer>
+  Built from the <strong>neuefische ds-python-basics</strong> curriculum · styled after the
+  <strong>nf-spiced</strong> theme · examples captured by running the code<br>
+  Reference: <a href="https://docs.python.org/3/tutorial/">The Python Tutorial</a>
+</footer>
+</body>
+</html>
